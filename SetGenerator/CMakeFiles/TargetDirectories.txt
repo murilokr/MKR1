@@ -1,0 +1,3 @@
+/home/murilo/Documents/TCC/SetGenerator/CMakeFiles/edit_cache.dir
+/home/murilo/Documents/TCC/SetGenerator/CMakeFiles/rebuild_cache.dir
+/home/murilo/Documents/TCC/SetGenerator/CMakeFiles/SetGenerator.dir

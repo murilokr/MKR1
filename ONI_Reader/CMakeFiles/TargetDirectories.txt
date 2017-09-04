@@ -1,0 +1,3 @@
+/home/murilo/Documents/TCC/Applications/ONI_Reader/CMakeFiles/rebuild_cache.dir
+/home/murilo/Documents/TCC/Applications/ONI_Reader/CMakeFiles/edit_cache.dir
+/home/murilo/Documents/TCC/Applications/ONI_Reader/CMakeFiles/oni_reader.dir

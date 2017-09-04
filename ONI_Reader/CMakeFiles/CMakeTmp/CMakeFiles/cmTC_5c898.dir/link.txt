@@ -1,0 +1,1 @@
+/usr/bin/cc      -v CMakeFiles/cmTC_5c898.dir/CMakeCCompilerABI.c.o  -o cmTC_5c898 -rdynamic  

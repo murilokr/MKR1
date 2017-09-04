@@ -1,0 +1,3 @@
+/home/murilo/Documents/TCC/Applications/KeyboardInput/CMakeFiles/edit_cache.dir
+/home/murilo/Documents/TCC/Applications/KeyboardInput/CMakeFiles/rebuild_cache.dir
+/home/murilo/Documents/TCC/Applications/KeyboardInput/CMakeFiles/keyboard.dir

@@ -1,0 +1,3 @@
+/home/murilo/Documents/TCC/Applications/InterfaceTeste/CMakeFiles/edit_cache.dir
+/home/murilo/Documents/TCC/Applications/InterfaceTeste/CMakeFiles/rebuild_cache.dir
+/home/murilo/Documents/TCC/Applications/InterfaceTeste/CMakeFiles/opengl.dir

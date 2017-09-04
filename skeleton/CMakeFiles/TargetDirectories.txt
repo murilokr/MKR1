@@ -1,0 +1,3 @@
+/home/murilo/Documents/TCC/Applications/skeleton/CMakeFiles/edit_cache.dir
+/home/murilo/Documents/TCC/Applications/skeleton/CMakeFiles/rebuild_cache.dir
+/home/murilo/Documents/TCC/Applications/skeleton/CMakeFiles/skeleton.dir

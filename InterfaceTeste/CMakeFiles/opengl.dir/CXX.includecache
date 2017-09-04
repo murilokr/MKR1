@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/murilo/Documents/TCC/Applications/InterfaceTeste/opengl.cpp
+stdlib.h
+-
+stdio.h
+-
+GL/glut.h
+-
+

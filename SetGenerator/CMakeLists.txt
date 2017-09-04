@@ -1,0 +1,5 @@
+cmake_minimum_required (VERSION 2.8)
+project( SetGenerator )
+find_package( OpenCV REQUIRED )
+add_executable( SetGenerator SetGenerator.cpp )
+target_link_libraries( SetGenerator ${OpenCV_LIBS} )

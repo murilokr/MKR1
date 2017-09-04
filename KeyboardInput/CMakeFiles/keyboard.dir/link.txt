@@ -1,0 +1,1 @@
+/usr/bin/c++      CMakeFiles/keyboard.dir/keyboard.cpp.o CMakeFiles/keyboard.dir/DetectHand.cpp.o  -o keyboard -rdynamic 

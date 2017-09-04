@@ -1,0 +1,32 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/murilo/Documents/TCC/Applications/KeyboardInput/DetectHand.cpp
+DetectHand.h
+/home/murilo/Documents/TCC/Applications/KeyboardInput/DetectHand.h
+
+/home/murilo/Documents/TCC/Applications/KeyboardInput/DetectHand.h
+iostream
+-
+
+/home/murilo/Documents/TCC/Applications/KeyboardInput/keyboard.cpp
+stdio.h
+-
+unistd.h
+-
+stdlib.h
+-
+termios.h
+-
+unistd.h
+-
+fcntl.h
+-
+DetectHand.h
+/home/murilo/Documents/TCC/Applications/KeyboardInput/DetectHand.h
+
