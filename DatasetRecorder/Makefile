@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/murilo/Documents/TCC/Applications/skeleton
+CMAKE_SOURCE_DIR = /home/murilo/Documents/TCC/Applications/DatasetRecorder
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/murilo/Documents/TCC/Applications/skeleton
+CMAKE_BINARY_DIR = /home/murilo/Documents/TCC/Applications/DatasetRecorder
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/murilo/Documents/TCC/Applications/skeleton/CMakeFiles /home/murilo/Documents/TCC/Applications/skeleton/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/murilo/Documents/TCC/Applications/DatasetRecorder/CMakeFiles /home/murilo/Documents/TCC/Applications/DatasetRecorder/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/murilo/Documents/TCC/Applications/skeleton/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/murilo/Documents/TCC/Applications/DatasetRecorder/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -111,44 +111,44 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named skeleton
+# Target rules for targets named recorder
 
 # Build rule for target.
-skeleton: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 skeleton
-.PHONY : skeleton
+recorder: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 recorder
+.PHONY : recorder
 
 # fast build rule for target.
-skeleton/fast:
-	$(MAKE) -f CMakeFiles/skeleton.dir/build.make CMakeFiles/skeleton.dir/build
-.PHONY : skeleton/fast
+recorder/fast:
+	$(MAKE) -f CMakeFiles/recorder.dir/build.make CMakeFiles/recorder.dir/build
+.PHONY : recorder/fast
 
-skeleton.o: skeleton.cpp.o
+datasetrecorder.o: datasetrecorder.cpp.o
 
-.PHONY : skeleton.o
+.PHONY : datasetrecorder.o
 
 # target to build an object file
-skeleton.cpp.o:
-	$(MAKE) -f CMakeFiles/skeleton.dir/build.make CMakeFiles/skeleton.dir/skeleton.cpp.o
-.PHONY : skeleton.cpp.o
+datasetrecorder.cpp.o:
+	$(MAKE) -f CMakeFiles/recorder.dir/build.make CMakeFiles/recorder.dir/datasetrecorder.cpp.o
+.PHONY : datasetrecorder.cpp.o
 
-skeleton.i: skeleton.cpp.i
+datasetrecorder.i: datasetrecorder.cpp.i
 
-.PHONY : skeleton.i
+.PHONY : datasetrecorder.i
 
 # target to preprocess a source file
-skeleton.cpp.i:
-	$(MAKE) -f CMakeFiles/skeleton.dir/build.make CMakeFiles/skeleton.dir/skeleton.cpp.i
-.PHONY : skeleton.cpp.i
+datasetrecorder.cpp.i:
+	$(MAKE) -f CMakeFiles/recorder.dir/build.make CMakeFiles/recorder.dir/datasetrecorder.cpp.i
+.PHONY : datasetrecorder.cpp.i
 
-skeleton.s: skeleton.cpp.s
+datasetrecorder.s: datasetrecorder.cpp.s
 
-.PHONY : skeleton.s
+.PHONY : datasetrecorder.s
 
 # target to generate assembly for a file
-skeleton.cpp.s:
-	$(MAKE) -f CMakeFiles/skeleton.dir/build.make CMakeFiles/skeleton.dir/skeleton.cpp.s
-.PHONY : skeleton.cpp.s
+datasetrecorder.cpp.s:
+	$(MAKE) -f CMakeFiles/recorder.dir/build.make CMakeFiles/recorder.dir/datasetrecorder.cpp.s
+.PHONY : datasetrecorder.cpp.s
 
 # Help Target
 help:
@@ -158,10 +158,10 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... skeleton"
-	@echo "... skeleton.o"
-	@echo "... skeleton.i"
-	@echo "... skeleton.s"
+	@echo "... recorder"
+	@echo "... datasetrecorder.o"
+	@echo "... datasetrecorder.i"
+	@echo "... datasetrecorder.s"
 .PHONY : help
 
 

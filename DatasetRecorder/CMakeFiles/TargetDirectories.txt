@@ -1,0 +1,3 @@
+/home/murilo/Documents/TCC/Applications/DatasetRecorder/CMakeFiles/edit_cache.dir
+/home/murilo/Documents/TCC/Applications/DatasetRecorder/CMakeFiles/rebuild_cache.dir
+/home/murilo/Documents/TCC/Applications/DatasetRecorder/CMakeFiles/recorder.dir

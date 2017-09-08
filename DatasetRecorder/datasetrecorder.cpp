@@ -100,14 +100,22 @@ typedef struct Frame{
         htRatioX = sqrt(pow(torsoX - headX, 2));
         htRatioY = sqrt(pow(torsoY - headY, 2));
         
-
-        rightVectorX = sqrt(pow(rightHandX - torsoX, 2)); //Para não deixar o valor negativo
+        //Descomentar para usar valores não negativos
+        /*rightVectorX = sqrt(pow(rightHandX - torsoX, 2)); //Para não deixar o valor negativo
         rightVectorY = sqrt(pow(rightHandY - torsoY, 2)); //Para não deixar o valor negativo
         rightVectorZ = sqrt(pow(rightHandZ - torsoZ, 2)); //Para não deixar o valor negativo
 
         leftVectorX = sqrt(pow(leftHandX - torsoX, 2)); //Para não deixar o valor negativo
         leftVectorY = sqrt(pow(leftHandY - torsoY, 2)); //Para não deixar o valor negativo
-        leftVectorZ = sqrt(pow(leftHandZ - torsoZ, 2)); //Para não deixar o valor negativo
+        leftVectorZ = sqrt(pow(leftHandZ - torsoZ, 2)); //Para não deixar o valor negativo*/
+
+        rightVectorX = rightHandX - torsoX;
+        rightVectorY = rightHandY - torsoY;
+        rightVectorZ = rightHandZ - torsoZ;
+
+        leftVectorX = leftHandX - torsoX;
+        leftVectorY = leftHandY - torsoY;
+        leftVectorZ = leftHandZ - torsoZ;
 
         int htRatio = sqrt(pow(htRatioX, 2) + pow(htRatioY, 2)); //Magnitude do Ratio da Cabeça e Tronco
 
@@ -232,10 +240,6 @@ void XN_CALLBACK_TYPE UserCalibration_CalibrationComplete(xn::SkeletonCapability
 
 
 XnStatus InicializarKinect(int *argc, char * argv[]){
-    if(*argc < 2){
-        cerr << "Uso: " << argv[0] << " <handconfiguration_ID>" << endl;
-        return XN_STATUS_ERROR;
-    }
 
     XnStatus nRetVal = XN_STATUS_OK;
     xn::EnumerationErrors errors;
@@ -399,6 +403,22 @@ int main(int argc, char * argv[]){
         return -1;
 
 
+    string filename = "./Dataset/data.arff";
+    std::fstream dataset(filename.c_str(), std::fstream::out | std::fstream::app);
+    if(!dataset.is_open()){
+        cerr << "Error opening " << filename << endl;
+        return -2;
+    }
+
+
+    cv::VideoCapture capture(CV_CAP_OPENNI);
+    capture.set(CV_CAP_OPENNI_IMAGE_GENERATOR_OUTPUT_MODE, CV_CAP_OPENNI_VGA_30HZ);
+    if(!capture.isOpened()){
+        printf("Couldn't load Kinect into OPENCV\n");
+        return -1;
+    }
+
+
     cout << endl << endl;
     cout << "+-----------Depth DataSet Generator-----------+" << endl; 
 	cout << "|     Copyright Murilo Kinape Rivabem 2017    |" << endl;
@@ -420,6 +440,7 @@ int main(int argc, char * argv[]){
     cv::Mat depthMap;
     cv::Mat maos;
     float roiSize = 75; //Tamanho da area de interesse das mãos
+    int frame = -50;
 
     bool endit = false;
     bool isRecording = false;
@@ -428,14 +449,8 @@ int main(int argc, char * argv[]){
     cv::namedWindow("RGB", 1);
     cv::namedWindow("Depth", 1);
     cv::namedWindow("ROI", 1);
-
-    cv::VideoCapture capture(CV_CAP_OPENNI);
-    capture.set(CV_CAP_OPENNI_IMAGE_GENERATOR_OUTPUT_MODE, CV_CAP_OPENNI_VGA_30HZ);
-    if(!capture.isOpened()){
-        printf("Couldn't load Kinect into OPENCV\n");
-        return -1;
-    }
     
+
     if(g_bNeedPose)
         printf("Assume calibration pose\n");
     
@@ -494,10 +509,14 @@ int main(int argc, char * argv[]){
             int lHandZ = aProjective.Z;
 
 
+            //Frame(int rhX, int rhY, int rhZ, int hc1, int lhX, int lhY, int lhZ, int hc2, int tX, int tY, int tZ, int hX, int hY)
+            Frame cFrame(rHandX, rHandY, rHandZ, 1, lHandX, lHandY, lHandZ, 1, torsoX, torsoY, torsoZ, headX, headY);
+            cout << frame << ": " << cFrame.rightVectorX << "\t" << cFrame.rightVectorY << "\t" << cFrame.rightVectorZ << "\t" << cFrame.handConfigurationRight << "\t" << cFrame.leftVectorX << "\t" << cFrame.leftVectorY << "\t" << cFrame.leftVectorZ << "\t" << cFrame.handConfigurationLeft << endl;
             if(isRecording){
-                //Frame(int rhX, int rhY, int rhZ, int hc1, int lhX, int lhY, int lhZ, int hc2, int tX, int tY, int tZ, int hX, int hY)
-                Frame cFrame(rHandX, rHandY, rHandZ, 1, lHandX, lHandY, lHandZ, 1, torsoX, torsoY, torsoZ, headX, headY);
-                cout << cFrame.rightVectorX << "\t" << cFrame.rightVectorY << "\t" << cFrame.rightVectorZ << "\t" << cFrame.handConfigurationRight << "\t" << cFrame.leftVectorX << "\t" << cFrame.leftVectorY << "\t" << cFrame.leftVectorZ << "\t" << cFrame.handConfigurationLeft << endl;
+                if(frame >= 0){// && frame < 100){
+                    cFrame.WriteToFile(dataset);    
+                }
+                frame++;
             }
 
             /////Pega a posicao da mão em coordenadas da tela
@@ -537,9 +556,12 @@ int main(int argc, char * argv[]){
         cv::imshow("Depth", depthMap);
         if(!maos.empty())
             cv::imshow("ROI", maos);
-        if(cv::waitKey(30) >= 0) break;
+        char esc = cv::waitKey(33);
+		if (esc == 27) break;
+		else if (esc == 32) isRecording = !isRecording;
     }
-
+    
+    dataset.close();
     g_scriptNode.Release();
     g_UserGenerator.Release();
     g_DepthGenerator.Release();

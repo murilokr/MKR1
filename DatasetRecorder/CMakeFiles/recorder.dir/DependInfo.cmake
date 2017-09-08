@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/murilo/Documents/TCC/Applications/skeleton/skeleton.cpp" "/home/murilo/Documents/TCC/Applications/skeleton/CMakeFiles/skeleton.dir/skeleton.cpp.o"
+  "/home/murilo/Documents/TCC/Applications/DatasetRecorder/datasetrecorder.cpp" "/home/murilo/Documents/TCC/Applications/DatasetRecorder/CMakeFiles/recorder.dir/datasetrecorder.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

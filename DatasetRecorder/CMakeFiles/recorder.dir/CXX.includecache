@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/murilo/Documents/TCC/Applications/skeleton/skeleton.cpp
+/home/murilo/Documents/TCC/Applications/DatasetRecorder/datasetrecorder.cpp
 XnCppWrapper.h
 -
 opencv2/opencv.hpp
