@@ -398,6 +398,43 @@ void Histogram(cv::Mat src){
 
 int main(int argc, char * argv[]){
 
+    if(argc == 2){
+        std::fstream debug(argv[1], std::fstream::in);
+        if(!debug.is_open()){
+            cerr << "Error opening debug mode file " << argv[1] << endl;
+            return -1;
+        }
+
+        string ignore;
+        for(int x=0; x<10; ++x){
+            getline(debug, ignore);
+            cout << ignore << endl;
+        } 
+        
+        float rightVectorX, rightVectorY, rightVectorZ;
+        float leftVectorX, leftVectorY, leftVectorZ;
+
+        cv::namedWindow("Debug", 1);
+        cv::Mat coordinates;
+
+        while(!debug.eof()){
+            coordinates = Mat(400,400, CV_8UC1);
+
+            debug >> rightVectorX >> rightVectorY >> rightVectorZ >> ignore;
+            debug >> leftVectorX >> leftVectorY >> leftVectorZ >> ignore;
+
+            cv::line(coordinates, Point(400/2,400/2), Point(400/2+rightVectorX*100, 400/2+rightVectorY*100), Scalar(255,255,255), 2);
+            cv::line(coordinates, Point(400/2,400/2), Point(400/2+leftVectorX*100, 400/2+leftVectorY*100), Scalar(255,255,255), 2);
+
+            cv::imshow("Debug", coordinates);
+            cout << "Waiting." << endl;
+            cv::waitKey(0);
+        }
+        debug.close();
+        return 0;
+    }
+
+
     XnStatus err = InicializarKinect(&argc, argv);
     if(err != XN_STATUS_OK)
         return -1;
@@ -440,7 +477,7 @@ int main(int argc, char * argv[]){
     cv::Mat depthMap;
     cv::Mat maos;
     float roiSize = 75; //Tamanho da area de interesse das mãos
-    int frame = -50;
+    int frame = 0;
 
     bool endit = false;
     bool isRecording = false;
@@ -513,9 +550,9 @@ int main(int argc, char * argv[]){
             Frame cFrame(rHandX, rHandY, rHandZ, 1, lHandX, lHandY, lHandZ, 1, torsoX, torsoY, torsoZ, headX, headY);
             cout << frame << ": " << cFrame.rightVectorX << "\t" << cFrame.rightVectorY << "\t" << cFrame.rightVectorZ << "\t" << cFrame.handConfigurationRight << "\t" << cFrame.leftVectorX << "\t" << cFrame.leftVectorY << "\t" << cFrame.leftVectorZ << "\t" << cFrame.handConfigurationLeft << endl;
             if(isRecording){
-                if(frame >= 0){// && frame < 100){
-                    cFrame.WriteToFile(dataset);    
-                }
+                //if(frame >= 0){// && frame < 100){
+                cFrame.WriteToFile(dataset);    
+                //}
                 frame++;
             }
 
