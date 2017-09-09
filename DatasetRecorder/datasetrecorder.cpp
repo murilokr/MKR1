@@ -415,10 +415,10 @@ int main(int argc, char * argv[]){
         float leftVectorX, leftVectorY, leftVectorZ;
 
         cv::namedWindow("Debug", 1);
-        cv::Mat coordinates;
 
         while(!debug.eof()){
-            coordinates = Mat(400,400, CV_8UC1);
+            cv::Mat coordinates(400,400, CV_8UC1);
+            coordinates = cv::Mat::zeros(400, 400, CV_8UC1);
 
             debug >> rightVectorX >> rightVectorY >> rightVectorZ >> ignore;
             debug >> leftVectorX >> leftVectorY >> leftVectorZ >> ignore;
