@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/murilo/Documents/TCC/Applications/main/kmeans.h
+iostream
+-
+vector
+-
+fstream
+-
+string
+-
+math.h
+-
+
+/home/murilo/Documents/TCC/Applications/main/main.cpp
+kmeans.h
+/home/murilo/Documents/TCC/Applications/main/kmeans.h
+
