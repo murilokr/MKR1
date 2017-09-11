@@ -26,6 +26,7 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <math.h>
+#include <sstream>
 #include <fstream>
 #include <iostream>
 
@@ -396,9 +397,18 @@ void Histogram(cv::Mat src){
 }
 
 
+template <typename T>
+string ToString(T val)
+{
+    stringstream stream;
+    stream << val;
+    return stream.str();
+}
+
+
 int main(int argc, char * argv[]){
 
-    if(argc == 2){
+    if(argc >= 2){
         std::fstream debug(argv[1], std::fstream::in);
         if(!debug.is_open()){
             cerr << "Error opening debug mode file " << argv[1] << endl;
@@ -406,19 +416,41 @@ int main(int argc, char * argv[]){
         }
 
         string ignore;
-        for(int x=0; x<10; ++x){
-            getline(debug, ignore);
-            cout << ignore << endl;
-        } 
+        int line = 1;
+        //if(argc > 2){
+        //    if(argv[2] == "-I"){
+                for(int x=0; x<10; ++x){
+                    line++;
+                    getline(debug, ignore);
+                    cout << ignore << endl;
+                } 
+        //    }
+        //}
         
         float rightVectorX, rightVectorY, rightVectorZ;
         float leftVectorX, leftVectorY, leftVectorZ;
 
         cv::namedWindow("Debug", 1);
 
+        
+        string frameInfo;
+        int fontFace = FONT_HERSHEY_SIMPLEX;
+        double fontScale = 0.5;
+        int thickness = 1;
+        int baseline=0;
+        Size textSize = getTextSize(frameInfo, fontFace, fontScale, thickness, &baseline);
+        baseline += thickness;
+
         while(!debug.eof()){
+            frameInfo = "Line: " + ToString(line);
             cv::Mat coordinates(400,400, CV_8UC1);
             coordinates = cv::Mat::zeros(400, 400, CV_8UC1);
+
+
+            // center the text
+            Point textOrg((coordinates.cols - textSize.width)/2,(coordinates.rows - 15));
+            putText(coordinates, frameInfo, textOrg, fontFace, fontScale, Scalar::all(255), thickness, 8);
+
 
             debug >> rightVectorX >> rightVectorY >> rightVectorZ >> ignore;
             debug >> leftVectorX >> leftVectorY >> leftVectorZ >> ignore;
@@ -426,9 +458,13 @@ int main(int argc, char * argv[]){
             cv::line(coordinates, Point(400/2,400/2), Point(400/2+rightVectorX*100, 400/2+rightVectorY*100), Scalar(255,255,255), 2);
             cv::line(coordinates, Point(400/2,400/2), Point(400/2+leftVectorX*100, 400/2+leftVectorY*100), Scalar(255,255,255), 2);
 
+            cout << "Line: " << frameInfo << " => ";
+            cout << rightVectorX << "\t" << rightVectorY << "\t" << rightVectorZ << "\t"; 
+            cout << leftVectorX << "\t" << leftVectorY << "\t" << leftVectorZ << endl;
+
             cv::imshow("Debug", coordinates);
-            cout << "Waiting." << endl;
             cv::waitKey(0);
+            line++;
         }
         debug.close();
         return 0;
@@ -440,7 +476,13 @@ int main(int argc, char * argv[]){
         return -1;
 
 
-    string filename = "./Dataset/data.arff";
+    int maxFrames = 0;
+    string filename;
+
+    cout << "Max Frames: "; cin >> maxFrames;
+    cout << "Filename: "; cin >> filename;
+
+    //string filename = "./Dataset/data.arff";
     std::fstream dataset(filename.c_str(), std::fstream::out | std::fstream::app);
     if(!dataset.is_open()){
         cerr << "Error opening " << filename << endl;
@@ -550,10 +592,13 @@ int main(int argc, char * argv[]){
             Frame cFrame(rHandX, rHandY, rHandZ, 1, lHandX, lHandY, lHandZ, 1, torsoX, torsoY, torsoZ, headX, headY);
             cout << frame << ": " << cFrame.rightVectorX << "\t" << cFrame.rightVectorY << "\t" << cFrame.rightVectorZ << "\t" << cFrame.handConfigurationRight << "\t" << cFrame.leftVectorX << "\t" << cFrame.leftVectorY << "\t" << cFrame.leftVectorZ << "\t" << cFrame.handConfigurationLeft << endl;
             if(isRecording){
-                //if(frame >= 0){// && frame < 100){
-                cFrame.WriteToFile(dataset);    
-                //}
-                frame++;
+                if(frame < maxFrames){
+                    cFrame.WriteToFile(dataset);    
+                    frame++;
+                }else{
+                    frame = 0;
+                    isRecording = false;
+                }
             }
 
             /////Pega a posicao da mão em coordenadas da tela

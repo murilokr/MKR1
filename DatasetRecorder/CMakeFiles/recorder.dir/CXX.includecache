@@ -17,6 +17,8 @@ opencv2/imgproc/imgproc.hpp
 -
 math.h
 -
+sstream
+-
 fstream
 -
 iostream

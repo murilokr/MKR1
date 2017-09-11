@@ -3,12 +3,22 @@
 #include <fstream>
 #include <string>
 #include <math.h>
+#include <opencv2/opencv.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
 
+using namespace cv;
 using namespace std;
 
 struct Centroids{
     float rightVectorX, rightVectorY, rightVectorZ, rightHandConfiguration;
     float leftVectorX, leftVectorY, leftVectorZ, leftHandConfiguration;
+
+
+    void print(){
+        cout << rightVectorX << "\t" << rightVectorY << "\t" << rightVectorZ << "\t" << rightHandConfiguration;
+        cout << leftVectorX << "\t" << leftVectorY << "\t" << leftVectorZ << "\t" << leftHandConfiguration;
+    }
 }typedef Centroids;
 
 
@@ -48,7 +58,15 @@ class KMeans{
             ReadFromFile(file);
         }
 
-
+        void PrintCodebook(){
+            int i = 0;
+            for(vector<Centroids>::iterator it = codebook->begin(); it != codebook->end(); ++it){
+                cout << i << ": ";
+                (*it).print();
+                cout << endl;
+                i++;
+            }
+        }
 
         int getClusterNumber(){
             return codebook->size();
@@ -92,6 +110,7 @@ class KMeans{
                 dHCl *= dHCl;
 
                 float d = sqrt(dXr + dYr + dZr + dHCr + dXl + dYl + dZl + dHCl);
+                //cout << "d: " << d << " | minDst: " << minDst << endl;
                 if(d < minDst){
                     minDst = d;
                     clstNumb = currClst;
@@ -99,7 +118,7 @@ class KMeans{
                 currClst++;
             }
 
-            return currClst;
+            return clstNumb;
         }
 
         vector<int>* returnObservations(vector<Centroids>* clusters){
