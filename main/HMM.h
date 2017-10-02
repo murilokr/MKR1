@@ -1,4 +1,4 @@
-#include "kmeans.h"
+#include "Kinect.h"
 #include "CvHMM.h"
 #include <sstream>
 
@@ -7,20 +7,33 @@ class HMM{
 private:
     Mat TRANS, EMIS, INIT; //Model
     string modelType;
+    bool alreadyModeled;
+
+    void CreateDefaultHMM(){
+        double TRANSdata[] = {0.2, 0.1, 0.4, 0.3,
+                              0.1, 0.6, 0.2, 0.1,
+                              0.0, 0.1, 0.8, 0.1,
+                              0.4, 0.0, 0.2, 0.4};
+        TRANS = cv::Mat(4,4,CV_64F,TRANSdata).clone();
+
+        double EMISdata[] = {4.0/16.0, 4.0/16.0, 0.0/16.0, 0.0/16.0, 0.0/16.0, 0.0/16.0, 4.0/16.0, 0.0/16.0, 0.0/16.0, 4.0/16.0, 0.0/16.0, 0.0/16.0, 4.0/16.0, 0.0/16.0, 0.0/16.0, 0.0/16.0,
+                             0.0/16.0, 4.0/16.0, 4.0/16.0, 4.0/16.0, 4.0/16.0, 4.0/16.0, 4.0/16.0, 4.0/16.0, 0.0/16.0, 0.0/16.0, 4.0/16.0, 4.0/16.0, 4.0/16.0, 0.0/16.0, 4.0/16.0, 4.0/16.0,
+                             0.0/16.0, 0.0/16.0, 4.0/16.0, 0.0/16.0, 0.0/16.0, 0.0/16.0, 0.0/16.0, 0.0/16.0, 0.0/16.0, 4.0/16.0, 4.0/16.0, 0.0/16.0, 0.0/16.0, 4.0/16.0, 0.0/16.0, 4.0/16.0,
+                             0.0/16.0, 4.0/16.0, 0.0/16.0, 4.0/16.0, 4.0/16.0, 4.0/16.0, 4.0/16.0, 0.0/16.0, 4.0/16.0, 0.0/16.0, 4.0/16.0, 0.0/16.0, 4.0/16.0, 4.0/16.0, 4.0/16.0, 4.0/16.0};
+        EMIS = cv::Mat(4,16,CV_64F,EMISdata).clone();
+        
+        double INITdata[] = {1.0, 0.0, 0.0, 0.0};
+        INIT = cv::Mat(1,4,CV_64F,INITdata).clone();
+    }
 
 public:
 
-    HMM(Mat &T, Mat &E, Mat &I, string type){
-        TRANS = T;
-        EMIS = E;
-        INIT = I;
-        modelType = type;
-    }
-
-    HMM(string type){
+    HMM(string type) : alreadyModeled(false){
         modelType = type;
         if(!load())
-            cerr << "Error loading " << "./Data/" << modelType;
+            CreateDefaultHMM();
+        else
+            alreadyModeled = true;
     }
 
     void getTransitionMatrix(Mat& data){data = TRANS;}
@@ -33,7 +46,8 @@ public:
         if(!file.is_open())
             return false;
 
-        int N, M, value;
+        int N, M;
+        double value;
         file >> N >> M;
         TRANS = cv::Mat(N,M,CV_64F); //talvez tenha q alterar o tipo
         for(int r = 0; r < TRANS.rows; r++){
@@ -107,7 +121,7 @@ public:
         cvhmm.train(seq, max_iter, TRANS, EMIS, INIT);
     }
 
-    double testProbability(Mat &seq){
+    double validate(const Mat &seq){
         CvHMM cvhmm;
         cv::Mat STATES,FORWARD,BACKWARD;
         double logpseq;
@@ -119,5 +133,9 @@ public:
     void print(){
         CvHMM cvhmm;
         cvhmm.printModel(TRANS,EMIS,INIT);
+    }
+
+    bool isAlreadyModeled(){
+        return alreadyModeled;
     }
 };

@@ -34,7 +34,28 @@ void getGestureObservationsFromTrainingData(KMeans *codebook, string filename, i
             ++it;
         }
     }
+}
 
+
+void TrainModels(KMeans *codebook, HMM *advanceHMM, HMM *returnHMM, HMM *zoomInHMM, HMM *zoomOutHMM){
+    Mat seq;
+    getGestureObservationsFromTrainingData(codebook, "./Dataset/advanceData.txt", 40, seq);
+    advanceHMM->train(seq, 500);
+
+    getGestureObservationsFromTrainingData(codebook, "./Dataset/returnData.txt", 40, seq);
+    returnHMM->train(seq, 500);
+
+    getGestureObservationsFromTrainingData(codebook, "./Dataset/zoomInData.txt", 40, seq);
+    zoomInHMM->train(seq, 500);
+
+    getGestureObservationsFromTrainingData(codebook, "./Dataset/zoomOutData.txt", 40, seq);
+    zoomOutHMM->train(seq, 500);
+
+
+    advanceHMM->save();
+    returnHMM->save();
+    zoomInHMM->save();
+    zoomOutHMM->save();
 }
 
 void printMat(Mat& data){
@@ -53,65 +74,48 @@ int main(int argc, char* argv[]){
     fstream data(filename.c_str(), ios::in);
 
     KMeans *Codebook = new KMeans(data);
-    data.close();
-
-    /*
-    vector<Centroids> *coordinates = new vector<Centroids>();
-    filename = "./Dataset/data.arff";
-    fstream dataset(filename.c_str(), ios::in);
-    if(!dataset.is_open())
-        return -1;
-    
-    string ignore;
-    for(int i = 0; i < 10; ++i)
-        getline(dataset, ignore);
-
-    float rVx, rVy, rVz, rHc;
-    float lVx, lVy, lVz, lHc;
-
-    while(!dataset.eof()){
-        dataset >> rVx >> rVy >> rVz >> rHc;
-        dataset >> lVx >> lVy >> lVz >> lHc;
-
-        Centroids c = {rVx, rVy, rVz, rHc, lVx, lVy, lVz, lHc};
-        coordinates->push_back(c);
-    }
-    dataset.close();
-
-    vector<int> *observations = Codebook->returnObservations(coordinates);
-    for(vector<int>::iterator it = observations->begin(); it != observations->end(); ++it)
-        cout << (*it) << endl;
-    */
-
-    double TRANSdata[] = {0.5 , 0.5 , 0.0,
-                          0.0 , 0.7 , 0.3,
-                          0.0 , 0.0 , 1.0};
-    cv::Mat TRANS = cv::Mat(3,3,CV_64F,TRANSdata).clone();
-    double EMISdata[] = {2.0/4.0 , 2.0/4.0 , 0.0/4.0 , 0.0/4.0 ,
-                         0.0/4.0 , 2.0/4.0 , 2.0/4.0 , 0.0/4.0 ,
-                         0.0/4.0 , 0.0/4.0 , 2.0/4.0 , 2.0/4.0 };
-    cv::Mat EMIS = cv::Mat(3,4,CV_64F,EMISdata).clone();
-    double INITdata[] = {1.0  , 0.0 , 0.0};
-    cv::Mat INIT = cv::Mat(1,3,CV_64F,INITdata).clone();
+    data.close();    
 
     HMM *advanceModel, *returnModel, *zoomInModel, *zoomOutModel;
-    
-    advanceModel = new HMM(TRANS, EMIS, INIT, "advance.hmm");
-    returnModel = new HMM(TRANS, EMIS, INIT, "return.hmm");
-    zoomInModel = new HMM(TRANS, EMIS, INIT, "zoomIn.hmm");
-    zoomOutModel = new HMM(TRANS, EMIS, INIT, "zoomOut.hmm");
+    advanceModel = new HMM("advance.hmm");
+    returnModel = new HMM("return.hmm");
+    zoomInModel = new HMM("zoomIn.hmm");
+    zoomOutModel = new HMM("zoomOut.hmm");
 
-    Mat seq;
-    getGestureObservationsFromTrainingData(Codebook, "./Dataset/advanceData.txt", 40, seq);
-    cout << "Untrained Model:" << endl;
-    advanceModel->print();
-    
-    cout << endl << endl << "Training Model..." << endl << endl;
-    advanceModel->train(seq, 500);
+    if(!advanceModel->isAlreadyModeled() || !returnModel->isAlreadyModeled() || !zoomInModel->isAlreadyModeled() || !zoomOutModel->isAlreadyModeled())
+        TrainModels(Codebook, advanceModel, returnModel, zoomInModel, zoomOutModel);
 
-    cout << "Trained Model:" << endl;
-    advanceModel->print();
-    //printMat(seq);
+
     
+    if(!createKinect())
+        return -1;
+    if(!createOpenCV())
+        return -1;
+    
+    
+    Mat observations;
+    getGestureObservationsFromTrainingData(Codebook, argv[1], 40, observations);
+    printMat(observations);
+
+    double validation;
+    for(int i = 0; i < observations.rows; i++){
+        cout << "Validation " << i << endl;
+
+        validation = advanceModel->validate(observations.row(0));
+        cout << "Advance HMM: " << validation << endl;
+
+
+        validation = returnModel->validate(observations.row(0));
+        cout << "Return HMM: " << validation << endl;
+
+        validation = zoomInModel->validate(observations.row(0));
+        cout << "Zoom In HMM: " << validation << endl;
+
+        validation = zoomOutModel->validate(observations.row(0));
+        cout << "Zoom Out HMM: " << validation << endl;
+
+        cout << endl << endl;
+    }
+
     return 0;
 }
