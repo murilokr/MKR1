@@ -31,6 +31,16 @@ CMakeFiles/tcc.dir/main.cpp.o: /usr/include/ni/XnStatusCodes.h
 CMakeFiles/tcc.dir/main.cpp.o: /usr/include/ni/XnTypes.h
 CMakeFiles/tcc.dir/main.cpp.o: /usr/include/ni/XnUtils.h
 CMakeFiles/tcc.dir/main.cpp.o: /usr/include/ni/XnVersion.h
+CMakeFiles/tcc.dir/main.cpp.o: /usr/local/include/fann.h
+CMakeFiles/tcc.dir/main.cpp.o: /usr/local/include/fann_activation.h
+CMakeFiles/tcc.dir/main.cpp.o: /usr/local/include/fann_cascade.h
+CMakeFiles/tcc.dir/main.cpp.o: /usr/local/include/fann_data.h
+CMakeFiles/tcc.dir/main.cpp.o: /usr/local/include/fann_error.h
+CMakeFiles/tcc.dir/main.cpp.o: /usr/local/include/fann_internal.h
+CMakeFiles/tcc.dir/main.cpp.o: /usr/local/include/fann_io.h
+CMakeFiles/tcc.dir/main.cpp.o: /usr/local/include/fann_train.h
+CMakeFiles/tcc.dir/main.cpp.o: /usr/local/include/fixedfann.h
+CMakeFiles/tcc.dir/main.cpp.o: /usr/local/include/floatfann.h
 CMakeFiles/tcc.dir/main.cpp.o: /usr/local/include/opencv/cxcore.h
 CMakeFiles/tcc.dir/main.cpp.o: /usr/local/include/opencv2/calib3d.hpp
 CMakeFiles/tcc.dir/main.cpp.o: /usr/local/include/opencv2/calib3d/calib3d_c.h

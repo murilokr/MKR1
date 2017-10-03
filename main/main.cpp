@@ -1,9 +1,28 @@
-#include "HMM.h"
+/**
+ * C++ Main - Interface para a consulta de documentos via reconhecimento de gestos
+ * 
+ * Copyright (c) 2017 Murilo K. Rivabem
+ * All rights reserved.
+ * 
+*/
 
+#include "HMM.h"
+#include <floatfann.h>
 
 //Return a matrix with NxM dimensions, where:
 //N = the number of times a gesture was made / sequence size (unknown)
 //M = the size of the gesture (known)
+/**
+ * getGestureObservationsFromTrainingData
+ * Função: Retorna uma matriz onde as linhas são as sequencias de movimentos de um arquivo, e as colunas são as observações desse movimento
+ * 
+ * In: KMeans *codebook (Uma referência à um objeto do tipo codebook)
+ * In: string filename (Nome do arquivo para obter as observacoes)
+ * In: int gestureSize (Número de frames do gesto)
+ * In: Mat &observationsMat (Matriz de observações)
+ * 
+ * Out: Mat &observationsMat (Matriz de observações)
+*/ 
 void getGestureObservationsFromTrainingData(KMeans *codebook, string filename, int gestureSize, cv::Mat &observationsMat){
     fstream file(filename.c_str(), ios::in);
     if(!file.is_open())
@@ -36,7 +55,16 @@ void getGestureObservationsFromTrainingData(KMeans *codebook, string filename, i
     }
 }
 
-
+/**
+ * TrainModels
+ * Função: Gera obsevações da base de dados e treina um HMM para cada gesto
+ * 
+ * In: KMeans *codebook (Uma referência à um objeto do tipo codebook)
+ * In: HMM *advanceHMM (Modelo do gesto Avançar)
+ * In: HMM *returnHMM (Modelo do gesto Retornar)
+ * In: HMM *zoomInHMM (Modelo do gesto Zoom In)
+ * In: HMM *zoomOutHMM (Modelo do gesto Zoom Out)
+*/ 
 void TrainModels(KMeans *codebook, HMM *advanceHMM, HMM *returnHMM, HMM *zoomInHMM, HMM *zoomOutHMM){
     Mat seq;
     getGestureObservationsFromTrainingData(codebook, "./Dataset/advanceData.txt", 40, seq);
@@ -58,6 +86,7 @@ void TrainModels(KMeans *codebook, HMM *advanceHMM, HMM *returnHMM, HMM *zoomInH
     zoomOutHMM->save();
 }
 
+
 void printMat(Mat& data){
     for (int i=0;i<data.rows;i++)
     {
@@ -70,6 +99,11 @@ void printMat(Mat& data){
 
 
 int main(int argc, char* argv[]){
+    if(argc < 2){
+        cerr << "Uso: " << argv[0] << " <testdata_dir>" << endl;
+        return -1;
+    }
+
     string filename = "./Dataset/codebook.txt";
     fstream data(filename.c_str(), ios::in);
 
@@ -85,7 +119,6 @@ int main(int argc, char* argv[]){
     if(!advanceModel->isAlreadyModeled() || !returnModel->isAlreadyModeled() || !zoomInModel->isAlreadyModeled() || !zoomOutModel->isAlreadyModeled())
         TrainModels(Codebook, advanceModel, returnModel, zoomInModel, zoomOutModel);
 
-
     
     if(!createKinect())
         return -1;
@@ -96,7 +129,7 @@ int main(int argc, char* argv[]){
     Mat observations;
     getGestureObservationsFromTrainingData(Codebook, argv[1], 40, observations);
     printMat(observations);
-
+    
     double validation;
     for(int i = 0; i < observations.rows; i++){
         cout << "Validation " << i << endl;

@@ -5,12 +5,20 @@
 //  Includes
 //-----------------------------------------------------------------------
 #include <XnCppWrapper.h>
-#include "kmeans.h"
+#include <fstream>
+#include <string>
+#include <iostream>
+#include <vector>
+#include <math.h>
+#include <opencv2/opencv.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
 
 //-----------------------------------------------------------------------
 //  Namespaces
 //-----------------------------------------------------------------------
 using namespace std;
+using namespace cv;
 using namespace xn;
 
 //-----------------------------------------------------------------------
@@ -204,26 +212,6 @@ bool createOpenCV(){
 
     cap = capture;
     return true;
-}
-
-
-
-void drawSkeleton(){
-    g_UserGenerator.GetSkeletonCap().SetSkeletonProfile(XN_SKEL_PROFILE_ALL);
-    
-    XnUserID aUsers[MAX_NUM_USERS];
-    XnUInt16 nUsers;
-
-
-    g_UserGenerator.GetUsers(users, nUsers);
-
-    for(XnUInt16 i = 0; i < MAX_NUM_USERS; i++){
-        if(!g.UserGenerator.GetSkeletonCap().IsTracking(users[i]))
-            continue;
-
-        g_UserGenerator.GetSkeletonCap().GetSkeletonJoint(aUsers[i], XN_SKEL_LEFT_HIP, )
-    }
-
 }
 
 #endif //KINECT_H
