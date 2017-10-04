@@ -6,8 +6,8 @@
  * 
 */
 
-#include "HMM.h"
-#include <floatfann.h>
+#include "HMM.hpp"
+#include "NeuralNetwork.hpp"
 
 //Return a matrix with NxM dimensions, where:
 //N = the number of times a gesture was made / sequence size (unknown)

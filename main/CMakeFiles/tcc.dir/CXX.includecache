@@ -12,21 +12,27 @@ opencv2/core/core.hpp
 opencv2/highgui/highgui.hpp
 -
 
-/home/murilo/Documents/TCC/Applications/main/HMM.h
-Kinect.h
-/home/murilo/Documents/TCC/Applications/main/Kinect.h
+/home/murilo/Documents/TCC/Applications/main/HMM.hpp
+Kinect.hpp
+/home/murilo/Documents/TCC/Applications/main/Kinect.hpp
 CvHMM.h
 /home/murilo/Documents/TCC/Applications/main/CvHMM.h
 sstream
 -
 
-/home/murilo/Documents/TCC/Applications/main/Kinect.h
+/home/murilo/Documents/TCC/Applications/main/Kinect.hpp
 XnCppWrapper.h
 -
-kmeans.h
-/home/murilo/Documents/TCC/Applications/main/kmeans.h
+kmeans.hpp
+/home/murilo/Documents/TCC/Applications/main/kmeans.hpp
 
-/home/murilo/Documents/TCC/Applications/main/kmeans.h
+/home/murilo/Documents/TCC/Applications/main/NeuralNetwork.hpp
+Kinect.hpp
+/home/murilo/Documents/TCC/Applications/main/Kinect.hpp
+doublefann.h
+-
+
+/home/murilo/Documents/TCC/Applications/main/kmeans.hpp
 iostream
 -
 vector
@@ -45,10 +51,10 @@ opencv2/imgproc/imgproc.hpp
 -
 
 /home/murilo/Documents/TCC/Applications/main/main.cpp
-HMM.h
-/home/murilo/Documents/TCC/Applications/main/HMM.h
-floatfann.h
--
+HMM.hpp
+/home/murilo/Documents/TCC/Applications/main/HMM.hpp
+NeuralNetwork.hpp
+/home/murilo/Documents/TCC/Applications/main/NeuralNetwork.hpp
 
 /usr/include/ni/Linux-Arm/XnPlatformLinux-Arm.h
 ../Linux-x86/XnPlatformLinux-x86.h
@@ -229,6 +235,10 @@ XnModuleInterface.h
 /usr/include/ni/XnVersion.h
 XnPlatform.h
 /usr/include/ni/XnPlatform.h
+
+/usr/local/include/doublefann.h
+fann.h
+/usr/local/include/fann.h
 
 /usr/local/include/fann.h
 fixedfann.h

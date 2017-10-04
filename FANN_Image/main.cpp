@@ -144,6 +144,48 @@ void writeInfo(char *argv[]){
 }
 
 
+void getHands(Mat& leftHand, Mat& rightHand, Mat frame, int windowSize){
+    XnUserID aUsers[MAX_NUM_USERS];
+    XnUInt16 nUsers;
+    XnSkeletonJointTransformation jointPosition;
+
+    g_Context.WaitOneUpdateAll(g_UserGenerator);
+    // print the torso information for the first user already tracking
+    nUsers=MAX_NUM_USERS;
+    g_UserGenerator.GetUsers(aUsers, nUsers);
+    for(XnUInt16 i=0; i<nUsers; i++)
+    {
+        if(g_UserGenerator.GetSkeletonCap().IsTracking(aUsers[i])==FALSE)
+            continue;
+
+        g_UserGenerator.GetSkeletonCap().GetSkeletonJoint(aUsers[i], XN_SKEL_RIGHT_HAND, jointPosition);
+        XnPoint3D aProjective;        
+        g_DepthGenerator.ConvertRealWorldToProjective(1,&jointPosition.position.position, &aProjective);
+        int rHandX = aProjective.X;
+        int rHandY = aProjective.Y;
+        int rHandZ = aProjective.Z;
+
+
+        g_UserGenerator.GetSkeletonCap().GetSkeletonJoint(aUsers[i], XN_SKEL_LEFT_HAND, jointPosition);
+        g_DepthGenerator.ConvertRealWorldToProjective(1,&jointPosition.position.position, &aProjective);
+        int lHandX = aProjective.X;
+        int lHandY = aProjective.Y;
+        int lHandZ = aProjective.Z;
+
+        cv::Rect roi(rHandX - (windowSize/2), rHandY - (windowSize/2), windowSize, windowSize);
+        cv::Rect roiImg(0, 0, frame.cols, frame.rows);
+        if( (roi.area() > 0) && ((roiImg & roi).area() == roi.area()) )
+            rightHand = frame(roi);    
+        threshold(rightHand, rightHand, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
+
+        roi = Rect(lHandX - (windowSize/2), lHandY - (windowSize/2), windowSize, windowSize);
+        if( (roi.area() > 0) && ((roiImg & roi).area() == roi.area()) )
+            leftHand = frame(roi);
+        threshold(leftHand, leftHand, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
+    }
+}
+
+
 int main(int argc, char* argv[]){
 
     if(argc < 2){
@@ -184,7 +226,43 @@ int main(int argc, char* argv[]){
     if(!createOpenCV())
         return -1;
 
+    bool endit = false;
+    bool isRecording = false;
 
 
+    int windowSize = 75;
+    Mat frame, leftHand, rightHand;
+
+    namedWindow("Depth Image", 1);
+    namedWindow("Left Hand", 1);
+    namedWindow("Right Hand", 1);
+
+    while(!endit){
+        while (xnOSWasKeyboardHit()){
+
+            char c = xnOSReadCharFromInput();
+            if(c == 27) endit = !endit;
+            else if (c == 32) isRecording = !isRecording;
+        }
+
+        cap.grab();
+        cap.retrieve(frame, CV_CAP_OPENNI_DISPARITY_MAP);
+        getHands(leftHand, rightHand, frame, windowSize);
+    
+
+        cv::imshow("Depth Image", frame);
+        if(!leftHand.empty())
+            cv::imshow("Left Hand", leftHand);
+        if(!rightHand.empty())
+            cv::imshow("Right Hand", rightHand);
+        char esc = cv::waitKey(33);
+        if (esc == 27) break;
+        else if (esc == 32) isRecording = !isRecording;
+    }
+
+    g_scriptNode.Release();
+    g_UserGenerator.Release();
+    g_DepthGenerator.Release();
+    g_Context.Release();
     return 0;
 }

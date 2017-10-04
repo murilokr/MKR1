@@ -3,9 +3,10 @@
 
 CMakeFiles/tcc.dir/main.cpp.o
  /home/murilo/Documents/TCC/Applications/main/CvHMM.h
- /home/murilo/Documents/TCC/Applications/main/HMM.h
- /home/murilo/Documents/TCC/Applications/main/Kinect.h
- /home/murilo/Documents/TCC/Applications/main/kmeans.h
+ /home/murilo/Documents/TCC/Applications/main/HMM.hpp
+ /home/murilo/Documents/TCC/Applications/main/Kinect.hpp
+ /home/murilo/Documents/TCC/Applications/main/NeuralNetwork.hpp
+ /home/murilo/Documents/TCC/Applications/main/kmeans.hpp
  /home/murilo/Documents/TCC/Applications/main/main.cpp
  /usr/include/ni/Linux-Arm/XnPlatformLinux-Arm.h
  /usr/include/ni/Linux-x86/XnOSLinux-x86.h
@@ -32,6 +33,7 @@ CMakeFiles/tcc.dir/main.cpp.o
  /usr/include/ni/XnTypes.h
  /usr/include/ni/XnUtils.h
  /usr/include/ni/XnVersion.h
+ /usr/local/include/doublefann.h
  /usr/local/include/fann.h
  /usr/local/include/fann_activation.h
  /usr/local/include/fann_cascade.h
