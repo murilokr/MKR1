@@ -3,6 +3,7 @@
 
 CMakeFiles/neuralnetwork.dir/main.cpp.o
  /home/murilo/Documents/TCC/Applications/FANN_Image/Kinect.h
+ /home/murilo/Documents/TCC/Applications/FANN_Image/NeuralNetwork.hpp
  /home/murilo/Documents/TCC/Applications/FANN_Image/main.cpp
  /usr/include/ni/Linux-Arm/XnPlatformLinux-Arm.h
  /usr/include/ni/Linux-x86/XnOSLinux-x86.h

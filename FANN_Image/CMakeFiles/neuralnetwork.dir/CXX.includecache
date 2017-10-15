@@ -26,13 +26,21 @@ opencv2/highgui/highgui.hpp
 opencv2/imgproc/imgproc.hpp
 -
 
+/home/murilo/Documents/TCC/Applications/FANN_Image/NeuralNetwork.hpp
+floatfann.h
+-
+string
+-
+fstream
+-
+
 /home/murilo/Documents/TCC/Applications/FANN_Image/main.cpp
 Kinect.h
 /home/murilo/Documents/TCC/Applications/FANN_Image/Kinect.h
 sstream
 -
-floatfann.h
--
+NeuralNetwork.hpp
+/home/murilo/Documents/TCC/Applications/FANN_Image/NeuralNetwork.hpp
 
 /usr/include/ni/Linux-Arm/XnPlatformLinux-Arm.h
 ../Linux-x86/XnPlatformLinux-x86.h
